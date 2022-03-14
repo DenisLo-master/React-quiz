@@ -1,6 +1,6 @@
 import React from "react";
 import classes from './FinishedQuiz.module.css'
-// import Button from "../UI/Button/Button";
+import Button from "../UI/Button/Button";
 
 const FinishedQuiz = props => {
     const successCount = Object.values(props.results).filter(
@@ -12,7 +12,8 @@ const FinishedQuiz = props => {
     //     }
     //     return total
     // }, 0)
-
+    const name = 'Диана'
+    const name1 = 'Привет, Диана'
     return (
         <div className={classes.FinishedQuiz}>
             <ul>
@@ -20,7 +21,8 @@ const FinishedQuiz = props => {
                     const cls = [
                         'fa',
                         props.results[quizItem.id] === 'error' ? 'fa-times' : 'fa-check',
-                        props.results[quizItem.id]]
+                        classes[props.results[quizItem.id]]
+                    ]
                     return (
                         <li key={index}>
                             <strong>{index + 1}.</strong>&nbsp;
@@ -33,8 +35,8 @@ const FinishedQuiz = props => {
 
             <p>Правильно {successCount} из {props.quiz.length}</p>
             <div>
-                {/* <Button type="primary">Повторить</Button>
-                <Button type="success">Перейти в список тестов</Button> */}
+                <Button onClick={props.onRetry} type="primary">Повторить</Button>
+                <Button type="success">Перейти в список тестов</Button>
             </div>
         </div>
     )
