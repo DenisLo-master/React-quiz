@@ -27,9 +27,7 @@
     margin-bottom: 15px;
 }
 
-.Drawer ul li a:hover, .active {
-    opacity: .6;
-}
+
 
 .Drawer ul li a {
     color: #363d54;
@@ -39,4 +37,9 @@
     position: relative;
     padding: 0 20px 10px 20px;
     transition: opacity .3s;
+}
+
+
+.Drawer ul li a:hover, .active {
+    opacity: .4;
 }

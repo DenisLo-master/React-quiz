@@ -18,7 +18,10 @@ const links = [
     },
 ]
 
+
 class Drawer extends Component {
+
+
 
     renderLinks() {
         return links.map((link, index) => {
@@ -26,8 +29,11 @@ class Drawer extends Component {
                 <li key={index}>
                     <NavLink
                         to={link.to}
-                        activeclassname={classes.active}
-                    >{link.label}</NavLink>
+                        className={({ isActive }) => isActive ? classes.active : null}
+                        onClick={this.props.onClose}
+                    >
+                        {link.label}
+                    </NavLink>
                 </li>
             )
         })
@@ -35,9 +41,7 @@ class Drawer extends Component {
 
 
     render() {
-
         const cls = [classes.Drawer]
-
         if (!this.props.isOpen) {
             cls.push(classes.close)
         }
