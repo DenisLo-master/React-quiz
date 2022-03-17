@@ -5,6 +5,7 @@ import Button from '../../components/UI/Button/Button'
 import { createControl, validate, validateForm } from '../../from/formFramework'
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary'
 import Select from "../../components/UI/Select/Select";
+import axios from 'axios'
 
 function createOptionControl(number) {
     return createControl({
@@ -63,19 +64,37 @@ export default class QuizCreator extends Component {
         }
         quiz.push(questionItem)
 
+
         this.setState({
-            quiz,
+            quiz: quiz,
             isFormValid: false,
             rightAnswerId: 1,
-            formControls: createFormControls(questionItem.id + 1)
+            formControls: createFormControls(quiz.length + 1),
         })
     }
 
-    createQuizHandler = event => {
+    createQuizHandler = async event => {
         event.preventDefault()
 
-        console.log(this.state.quiz)
-        //TODO: Server
+        try {
+            await axios.post('https://react-quiz-458fb-default-rtdb.europe-west1.firebasedatabase.app/quizzes.json', this.state.quiz)
+
+            this.setState({
+                quiz: [],
+                isFormValid: false,
+                rightAnswerId: 1,
+                formControls: createFormControls(1)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+
+        // axios.post('https://react-quiz-458fb-default-rtdb.europe-west1.firebasedatabase.app/quizzes.json', this.state.quiz)
+        //     .then(response => {
+        //         console.log(response)
+        //     })
+        //     .catch(error => console.log(error))
+
     }
 
     ChangeHandler = (value, controlName) => {
@@ -120,7 +139,7 @@ export default class QuizCreator extends Component {
 
     selectChangeHandler = event => {
         this.setState({
-            rightAnswer: +event.target.value
+            rightAnswerId: +event.target.value
         })
     }
 
@@ -128,7 +147,7 @@ export default class QuizCreator extends Component {
 
         const select = <Select
             label="Выберите правильный ответ"
-            value={this.state.rightAnswer}
+            value={this.state.rightAnswerId}
             onChange={this.selectChangeHandler}
             options={[
                 { text: 1, value: 1 },
