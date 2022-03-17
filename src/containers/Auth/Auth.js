@@ -55,6 +55,7 @@ export default class Auth extends Component {
     }
 
     submitHandler = event => {
+        // чтобы не перезагружалась страница целиком при нажатии кнопки
         event.preventDefault()
     }
 
