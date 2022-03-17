@@ -4,8 +4,6 @@ import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz';
 import FinishedQuiz from "../../components/FinishedQuiz/FinishedQuiz";
 import axios from "../../axios/axios-quiz";
 import Loader from "../../components/UI/Loader/Loader";
-import { useParams } from 'react-router-dom'
-
 
 
 class Quiz extends Component {
@@ -86,7 +84,7 @@ class Quiz extends Component {
     async componentDidMount() {
 
         try {
-            const response = await axios.get(`/quizzes/${this.props.match.params.id}.json`)
+            const response = await axios.get(`/quizzes/${this.props.params.id}.json`)
             const quiz = response.data
 
             this.setState({
@@ -105,6 +103,7 @@ class Quiz extends Component {
             <div className={classes.Quiz}>
                 <div className={classes.QuizWrapper}>
                     <h1>Ответьте на все вопросы</h1>
+
                     {
                         this.state.loading
                             ? <Loader />
