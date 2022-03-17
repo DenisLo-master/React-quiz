@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import classes from './QuizList.module.css'
 import { NavLink } from "react-router-dom";
-import axios from 'axios'
+import axios from '../../axios/axios-quiz'
+import Loader from "../../components/UI/Loader/Loader";
 
 
 export default class QuizList extends Component {
     state = {
-        quizzes: []
+        quizzes: [],
+        loading: true
     }
 
     renderQuizzes() {
@@ -24,19 +26,24 @@ export default class QuizList extends Component {
     }
 
     async componentDidMount() {
-        const response = await axios.get('https://react-quiz-458fb-default-rtdb.europe-west1.firebasedatabase.app/quizzes.json')
+        try {
+            const response = await axios.get('/quizzes.json')
 
-        const quizzes = []
+            const quizzes = []
 
-        Object.keys(response.data).forEach((key, index) => {
-            quizzes.push({
-                id: key,
-                name: `Тест №${index + 1}`
+            Object.keys(response.data).forEach((key, index) => {
+                quizzes.push({
+                    id: key,
+                    name: `Тест №${index + 1}`
+                })
             })
-        })
-        this.setState({
-            quizzes
-        })
+            this.setState({
+                quizzes,
+                loading: false,
+            })
+        } catch (e) {
+            console.log(e)
+        }
     }
 
 
@@ -46,9 +53,14 @@ export default class QuizList extends Component {
             <div className={classes.QuizList}>
                 <div>
                     <h1>Список тестов</h1>
-                    <ul>
-                        {this.renderQuizzes()}
-                    </ul>
+                    {
+                        this.state.loading
+                            ? <Loader />
+                            : <ul>
+                                {this.renderQuizzes()}
+                            </ul>
+                    }
+
                 </div>
             </div>
         )
