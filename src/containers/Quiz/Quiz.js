@@ -4,8 +4,13 @@ import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz';
 import FinishedQuiz from "../../components/FinishedQuiz/FinishedQuiz";
 import axios from "../../axios/axios-quiz";
 import Loader from "../../components/UI/Loader/Loader";
+import { useParams } from 'react-router-dom'
 
 
+export function QuizId() {
+    const { quizId } = useParams()
+    return (<Quiz quizId={quizId} />)
+}
 class Quiz extends Component {
     state = {
         results: {}, //{[id]: 'success' 'error'}
@@ -13,7 +18,8 @@ class Quiz extends Component {
         activeQuestion: 0,
         answerState: null, //для текущего состояния Answeritem{[id]: 'success' 'error'}
         quiz: [],
-        loading: true
+        loading: true,
+        quizId: this.props.quizId,
     }
 
 
@@ -31,7 +37,7 @@ class Quiz extends Component {
 
         const question = this.state.quiz[this.state.activeQuestion]
 
-        if (question.rightAnswer === answerId) {
+        if (question.rightAnswerId === answerId) {
             if (!results[question.id]) {
                 results[question.id] = 'success'
             }
@@ -84,12 +90,16 @@ class Quiz extends Component {
     async componentDidMount() {
 
         try {
-            const response = await axios.get(`/quizzes/${this.props.params.id}.json`)
+
+            const response = await axios.get(`/quizzes/${this.state.quizId}.json`)
             const quiz = response.data
 
+
             this.setState({
-                quiz
+                quiz,
+                loading: false
             })
+            console.log('quiz-----', this.state)
 
         }
         catch (e) {
@@ -129,4 +139,4 @@ class Quiz extends Component {
     }
 }
 
-export default Quiz
+export default QuizId
