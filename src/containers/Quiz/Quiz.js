@@ -99,7 +99,7 @@ class Quiz extends Component {
                 quiz,
                 loading: false
             })
-            console.log('quiz-----', this.state)
+
 
         }
         catch (e) {
